@@ -2,9 +2,14 @@ const express =require('express')
 const app = express()
 const cors = require('cors')
 require('dotenv').config()
+const path = require('path')
+
 // api import
 const userRouter = require('./src/routes/userRouter')
 
+
+// Serve static files from the client/dist directory
+app.use(express.static(path.resolve(__dirname, '..', 'client', 'dist')));
 
 // Middlewares
 app.use(cors())
@@ -15,12 +20,10 @@ app.use('/api/v1', userRouter)
 
 
 // managing frontend routing
-app.use(express.static('client/dist'))
+// app.use(express.static('/client/dist'))
 app.get('*', function(req, res){
-    res.sendFile(path.resolve(__dirname, 'client', 'dist', 'index.html'))
+    res.sendFile(path.resolve(__dirname, '..', 'client', 'dist', 'index.html'))
 })
-
-
 
 
 module.exports = app;

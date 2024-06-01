@@ -6,7 +6,7 @@ exports.register = async (req, res) => {
   try {
     const { username, fullName, email, password } = req.body;
 
-    // check all fields are provided or not & validation
+    // validation
     if (!username || username.length > 12) {
       return res.json({
         error: "Username can be maximum 12 characters",
@@ -22,7 +22,7 @@ exports.register = async (req, res) => {
         error: "Email is required",
       });
     }
-    if (!password.trim() || password.length < 6) {
+    if (!password || password.length < 6) {
       return res.json({
         error: "Password must be at least 6 characters long",
       });
@@ -45,10 +45,20 @@ exports.register = async (req, res) => {
       },
     });
   } catch (error) {
-    console.log(error);
-    res.status(500).json({
+    console.error("Error in register controller:", error.message);
+
+    // Handle specific error for existing email
+    if (error.message) {
+      return res.status(400).json({
+        success: false,
+        message: error,
+      });
+    }
+
+    // Handle generic errors
+    return res.status(500).json({
       success: false,
-      message: error.message,
+      message: "Server error",
     });
   }
 };
