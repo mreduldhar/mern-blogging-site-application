@@ -2,11 +2,11 @@ import { NavLink } from "react-router-dom";
 
 const Navbar = () => {
   return (
-    <div>
-      <nav className="w-full h-24 flex justify-between items-center px-5">
-        <NavLink to="/" className="text-3xl font-semibold ">EchoBlog</NavLink>
-        <div className="right flex justify-between items-center gap-5 text-xl font-semibold mx-10">
-          <ul className="flex justify-between items-center gap-5">
+    <div className="w-full h-16 px-10 bg-slate-200 bg-opacity-50">
+      <nav className="w-full h-full flex justify-between items-center">
+        <NavLink to="/" className="text-2xl font-semibold ">EchoBlog</NavLink>
+        <div className="flex justify-between items-center gap-4 text-md font-semibold">
+          <ul className="flex justify-between items-center gap-4">
             <li className="hover:text-blue-800">
               <NavLink to="/" exact activeClassName="active">
                 Home
