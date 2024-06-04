@@ -270,6 +270,20 @@ const RecentPosts = () => {
               </div>
             </div>
           </div>
+          <hr />
+          {/* pagination */}
+          <div className="flex flex-row justify-center space-x-4 my-12 text-white">
+            {[1, 2, 3, 4, 5].map((item, index) => {
+              return (
+                <span
+                  key={index}
+                  className="bg-blue-500 w-10 h-10 rounded-full leading-10 text-center"
+                >
+                  {item}
+                </span>
+              );
+            })}
+          </div>
         </div>
       </div>
     </div>

@@ -2,9 +2,9 @@ import { NavLink } from "react-router-dom";
 
 const Navbar = () => {
   return (
-    <div className="w-full h-16 px-10 bg-slate-200 bg-opacity-50">
+    <div className="w-full h-16 px-10">
       <nav className="w-full h-full flex justify-between items-center">
-        <NavLink to="/" className="text-2xl font-semibold ">EchoBlog</NavLink>
+        <NavLink to="/" className="text-2xl font-semibold">EchoBlog</NavLink>
         <div className="flex justify-between items-center gap-4 text-md font-semibold">
           <ul className="flex justify-between items-center gap-4">
             <li className="hover:text-blue-800">
