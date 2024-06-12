@@ -1,31 +1,43 @@
 const userModel = require("../models/userModel");
 const { createUser } = require("../services/userServices");
+const { comparePassword } = require("../helpers/hashPass");
+const { CreateJWT } = require("../helpers/jsonWebToken");
+const { jwtSecretKey, jwtExpirationTime } = require("../../secrets");
 
 // create a new user
-exports.register = async (req, res) => {
+exports.register = async (req, res, next) => {
   try {
     const { username, fullName, email, password } = req.body;
 
     // validation
-    if (!username || username.length > 12) {
-      return res.json({
-        error: "Username can be maximum 12 characters",
-      });
+    if (!username) {
+      throw new Error("Username is required");
+    }
+    if (username.length > 12) {
+      throw new Error("Username can be maximum 12 characters");
     }
     if (!fullName) {
-      return res.json({
-        error: "Full Name is required",
-      });
+      throw new Error("Full Name is required");
     }
     if (!email) {
-      return res.json({
-        error: "Email is required",
-      });
+      throw new Error("Email is required");
     }
-    if (!password || password.length < 6) {
-      return res.json({
-        error: "Password must be at least 6 characters long",
-      });
+    if (!password) {
+      throw new Error("Password is required");
+    }
+    if (password.length < 6) {
+      throw new Error("Password must be at least 6 characters long");
+    }
+
+    // Check existing username
+    const existingUsername = await userModel.findOne({ username });
+    if (existingUsername) {
+      throw new Error("Username is already taken");
+    }
+    // Check existing email
+    const existingEmail = await userModel.findOne({ email });
+    if (existingEmail) {
+      throw new Error("Email is already taken");
     }
 
     // create a user
@@ -45,35 +57,47 @@ exports.register = async (req, res) => {
       },
     });
   } catch (error) {
-    console.error("Error in register controller:", error.message);
-
-    // Handle specific error for existing email
-    if (error.message) {
-      return res.status(400).json({
-        success: false,
-        message: error,
-      });
-    }
-
-    // Handle generic errors
-    return res.status(500).json({
-      success: false,
-      message: "Server error",
-    });
+    next(error);
   }
 };
 
 // login user
-exports.login = async (req, res) => {
-  const { email, password } = req.body;
-  const user = await userModel.findOne({ email });
-  const match = await comparePassword(password, user.password);
-  if (!match) {
-    return res.json({ error: "Invalid password" });
+exports.login = async (req, res, next) => {
+  try {
+    const { email, password } = req.body;
+
+    if (!email) {
+      throw new Error("Email is required");
+    }
+    if (!password) {
+      throw new Error("Password is required");
+    }
+
+    // Check existing user by email
+    const user = await userModel.findOne({ email });
+    // console.log("User: ", user);
+    if (!user) {
+      throw new Error("User not found");
+    }
+
+    const match = await comparePassword(password, user.password);
+    if (!match) {
+      throw new Error("Invalid Email or Password");
+    }
+
+    // Generate JWT
+    const token = CreateJWT(
+      { id: user._id, username: user.username, email: user.email },
+      jwtSecretKey,
+      jwtExpirationTime
+    );
+
+    return res.status(200).json({
+      status: "Success",
+      message: "Login Successfully",
+      token,
+    });
+  } catch (error) {
+    next(error);
   }
-  res.status(200).json({
-    success: true,
-    message: "Succesfully login",
-    user,
-  });
 };
