@@ -10,7 +10,7 @@ const HeroSection = () => {
       <div className="container flex justify-center items-center mx-auto w-full h-[35rem]">
         <div className="row">
           <div className="columns-3 mx-auto py-20">
-            <div className="item-1 w-[23.125rem] h-full flex flex-col relative">
+            <div className="c-1 w-[23.125rem] h-full flex flex-col relative">
               <div className="card-1 w-full h-[12.5rem] rounded-md mb-[1.875rem] relative overflow-hidden cursor-pointer">
                 <div className="absolute inset-0 bg-black bg-opacity-40 z-10"></div>
                 <img
@@ -40,7 +40,7 @@ const HeroSection = () => {
                 </div>
               </div>
             </div>
-            <div className="item-2 w-[23.125rem] h-[26.875rem] relative px-[0.875rem]">
+            <div className="c-2 w-[23.125rem] h-[26.875rem] relative px-[0.875rem]">
               <div className="card-1 w-full h-full rounded-md relative overflow-hidden cursor-pointer">
                 <div className="absolute inset-0 bg-custom-gradient z-10"></div>
                 <img
@@ -64,7 +64,7 @@ const HeroSection = () => {
                 </div>
               </div>
             </div>
-            <div className="item-3 w-[23.125rem] h-full flex flex-col relative">
+            <div className="c-3 w-[23.125rem] h-full flex flex-col relative">
               <div className="card-1 w-full h-[12.5rem] rounded-md mb-[1.875rem] relative overflow-hidden cursor-pointer">
                 <div className="absolute inset-0 bg-custom-gradient z-10"></div>
                 <img

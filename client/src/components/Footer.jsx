@@ -10,8 +10,9 @@ import { MdEmail } from "react-icons/md";
 const Footer = () => {
   return (
     <div className="bg-[#333333] py-20 text-[#737373]">
-      <div className="container mx-auto max-w-[71.375rem] h-[20rem]">
-        <div className="row w-full h-full flex flex-column gap-20">
+      <div className="container mx-auto max-w-[71.375rem] max-h-[20rem]">
+        <div className="row w-full h-full flex flex-column gap-16 mb-12">
+          {/* first column */}
           <div className="w-2/5 about px-10">
             <h1 className="text-white text-xl mb-3">About Us</h1>
             <p className="text-[#737373]">
@@ -21,6 +22,7 @@ const Footer = () => {
               voluptatem in. Soluta, eligendi, architecto.
             </p>
           </div>
+          {/* second column */}
           <div className="w-1/5 links flex gap-10">
             <div>
               <ul className="list-none leading-8">
@@ -95,6 +97,7 @@ const Footer = () => {
               </ul>
             </div>
           </div>
+          {/* third column */}
           <div className="w-2/5 contact">
             <h1 className="capitalize text-white text-lg mb-2">
               Connect with us
@@ -141,10 +144,14 @@ const Footer = () => {
           </div>
         </div>
         {/* copyrights */}
-        <h1 className="text-center">
-          Copyright © 2024 All rights reserved | This template is made by{" "}
-          <strong>Mredul Kanthy Dhar</strong>
-        </h1>
+        <div className="row w-full h-full">
+          <div>
+            <p className="text-center">
+              Copyright © 2024 All rights reserved | This template is made by{" "}
+              <strong>Mredul Kanthy Dhar</strong>
+            </p>
+          </div>
+        </div>
       </div>
     </div>
   );

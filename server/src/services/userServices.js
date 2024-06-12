@@ -3,12 +3,6 @@ const { hashPassword, comparePassword } = require("../helpers/hashPass");
 
 exports.createUser = async ({ username, fullName, email, password }) => {
   try {
-    // check if user exist or not
-    const existingEmail = await userModel.findOne({ email });
-    if (existingEmail) {
-      throw new Error("Email is taken");
-    }
-
     const hashedPassword = await hashPassword(password);
 
     return await userModel.create({
