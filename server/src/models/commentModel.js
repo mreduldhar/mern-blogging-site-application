@@ -1,18 +1,18 @@
-const mongoose = require("mongoose");
+const {Schema, model} = require("mongoose");
 
-const commentSchema = mongoose.Schema(
+const commentSchema = Schema(
   {
     content: {
       type: String,
       required: true,
     },
     author: {
-      type: mongoose.Schema.Types.ObjectId,
+      type: Schema.Types.ObjectId,
       ref: "User",
       required: true,
     },
     post: {
-      type: mongoose.Schema.Types.ObjectId,
+      type: Schema.Types.ObjectId,
       ref: "Post",
       required: true,
     },
@@ -24,6 +24,6 @@ const commentSchema = mongoose.Schema(
   { versionKey: false }
 );
 
-const commentModel = mongoose.model("Comment", commentSchema);
+const commentModel = model("Comment", commentSchema);
 
 module.exports = commentModel;
