@@ -3,6 +3,7 @@ const { createUser } = require("../services/userServices");
 const { comparePassword } = require("../helpers/hashPass");
 const { CreateJWT } = require("../helpers/jsonWebToken");
 const { jwtSecretKey, jwtExpirationTime } = require("../../secrets");
+const mongoose = require("mongoose");
 
 // create a new user
 exports.register = async (req, res, next) => {
@@ -80,22 +81,54 @@ exports.login = async (req, res, next) => {
       throw new Error("User not found");
     }
 
-    const match = await comparePassword(password, user.password);
-    if (!match) {
+    // compare password
+    const isMatch = await comparePassword(password, user.password);
+    if (!isMatch) {
       throw new Error("Invalid Email or Password");
     }
 
+    const payload = {
+      _id: user._id,
+      username: user.username,
+      email: user.email,
+    };
+
     // Generate JWT
-    const token = CreateJWT(
-      { id: user._id, username: user.username, email: user.email },
-      jwtSecretKey,
-      jwtExpirationTime
-    );
+    const token = CreateJWT(payload, jwtSecretKey, jwtExpirationTime);
 
     return res.status(200).json({
       status: "Success",
       message: "Login Successfully",
       token,
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
+// User Profile update
+exports.profileUpdate = async (req, res, next) => {
+  try {
+    const reqBody = req.body;
+    const userId = req.user._id;
+
+    console.log("UserId: ", userId);
+
+    // Update user profile
+    const profile = await userModel.findOneAndUpdate(
+      { _id: userId },
+      { $set: reqBody },
+      { new: true, upsert: false }
+    );
+
+    if (!profile) {
+      throw new Error("User profile not found.");
+    }
+
+    return res.status(200).json({
+      status: "Success",
+      message: "User profile has been updated",
+      user: profile,
     });
   } catch (error) {
     next(error);
