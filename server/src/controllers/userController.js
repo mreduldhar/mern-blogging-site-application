@@ -3,7 +3,6 @@ const { createUser } = require("../services/userServices");
 const { comparePassword } = require("../helpers/hashPass");
 const { CreateJWT } = require("../helpers/jsonWebToken");
 const { jwtSecretKey, jwtExpirationTime } = require("../../secrets");
-const mongoose = require("mongoose");
 
 // create a new user
 exports.register = async (req, res, next) => {
