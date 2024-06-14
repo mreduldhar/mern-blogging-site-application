@@ -1,10 +1,7 @@
 // Basic Library import
 const express = require("express");
 const app = express();
-const path = require("path");
-
-// api import
-const router = require("./src/routes/api");
+const { readdirSync } = require("fs");
 
 // Security Middleware library import
 const cors = require("cors");
@@ -31,22 +28,27 @@ const limiter = rateLimit({
 });
 app.use(limiter);
 
-// Route Implement
-app.use("/api/v1", router);
+// Route Implement for multiple files
+readdirSync("./src/routes").map((router) => {
+  app.use("/api/v1", require(`./src/routes/${router}`));
+});
 
-// Undefined ROute Implement
+// Undefined Route Implement
 app.use("*", (req, res) => {
   return res.status(404).json({
     status: "fail",
-    message: "Not found",
+    message: "Page not found",
   });
 });
 
-// Error-handling middleware
+// Error-handling Middleware
 app.use((err, req, res, next) => {
-  return res.status(err.status || 500).json({
+  const message = err.message ? err.message : "Server Error Occurred";
+  const status = err.status ? err.status : 500;
+
+  return res.status(status).json({
     status: "Error",
-    message: err.message,
+    message: message,
   });
 });
 
